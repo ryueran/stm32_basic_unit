@@ -53,3 +53,4 @@ dkms.conf
 
 # folders
 /stm32_vs_2/.vscode/
+/stm32_vs_2/build/
