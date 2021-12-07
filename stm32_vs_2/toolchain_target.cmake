@@ -1,0 +1,8 @@
+set(CMAKE_C_COMPILER "C:/gnu/gnu/q4-major/bin/arm-none-eabi-gcc.exe")
+set(CMAKE_ASM_COMPILER "C:/gnu/gnu/q4-major/bin/arm-none-eabi-as.exe")
+SET(ASM_OPTIONS "-x assembler-with-cpp") 
+set(OBJECT_GEN "-mcpu=cortex-m0")
+set(OBJECT_GEN "-mthumb")
+set(CMAKE_C_FLAGS "-mcpu=cortex-m0 -mthumb --specs=nosys.specs -pipe -fno-common -ffunction-sections -fdata-sections -mthumb -mno-thumb-interwork -mfpu=vfp -msoft-float")
+set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mthumb")
+set(CMAKE_EXE_LINKER_FLAGS "-T ${CMAKE_CURRENT_LIST_DIR}/soc_sp/linker_script/STM32F030R8Tx_FLASH.ld")

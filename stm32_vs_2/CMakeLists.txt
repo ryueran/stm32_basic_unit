@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.15)
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+
+set(ASM_OPTIONS "-x assembler-with-cpp") 
+set(OBJECT_GEN "-mcpu=cortex-m0")
+set(OBJECT_GEN "-mthumb")
+set(CMAKE_C_FLAGS "-mcpu=cortex-m0 -mthumb --specs=nosys.specs -pipe -fno-common -ffunction-sections -fdata-sections -mthumb -mno-thumb-interwork -mfpu=vfp -msoft-float")
+set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mthumb")
+
+project (hello LANGUAGES C ASM)
+set(CMAKE_EXE_LINKER_FLAGS "-T ${CMAKE_CURRENT_LIST_DIR}/soc_sp/linker_script/STM32F030R8Tx_FLASH.ld")
+add_subdirectory(soc_sp)
+add_subdirectory(APP)
+add_executable(hello main.c)

@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.15)
+project(soc_sp LANGUAGES C ASM)
+ENABLE_LANGUAGE( ASM)
+add_library(soc_sp STATIC)
+set(CMAKE_CXX_STANDARD 11)
+# set_source_files_properties(Startup/startup_stm32f030x8.s PROPERTIES COMPILE_FLAGS "-x assembler-with-cpp")
+
+target_sources(soc_sp
+PUBLIC
+    BSP/Nucleo/stm32f0xx_nucleo.c
+    HAL/src/stm32f0xx_hal_cortex.c
+    HAL/src/stm32f0xx_hal_flash_ex.c
+    HAL/src/stm32f0xx_hal_flash.c
+    HAL/src/stm32f0xx_hal_gpio.c
+    HAL/src/stm32f0xx_hal_i2c_ex.c
+    HAL/src/stm32f0xx_hal_pwr_ex.c
+    HAL/src/stm32f0xx_hal_pwr.c
+    HAL/src/stm32f0xx_hal_rcc_ex.c
+    HAL/src/stm32f0xx_hal_rcc.c
+    HAL/src/stm32f0xx_hal_tim_ex.c
+    HAL/src/stm32f0xx_hal_tim.c
+    HAL/src/stm32f0xx_hal.c
+    HAL/src/stm32f0xx_hal_spi.c
+    HAL/src/stm32f0xx_hal_spi_ex.c
+    HAL/src/stm32f0xx_hal_dma.c
+    System/system_stm32f0xx.c
+PRIVATE
+    Startup/startup_stm32f030x8.s
+)
+
+target_include_directories(soc_sp 
+PUBLIC
+    HAL/include
+    HAL/include/Legacy
+    CMSIS/Device/ST/STM32F0xx/Include
+    CMSIS/Include
+    /BSP/h_nec
+)
