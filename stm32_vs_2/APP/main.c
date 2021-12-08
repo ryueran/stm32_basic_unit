@@ -102,7 +102,7 @@ __IO uint32_t data32 = 0 , MemoryProgramStatus = 0;
 /*Variable used for Erase procedure*/
 static FLASH_EraseInitTypeDef EraseInitStruct;
 
-uint32_t data_write[] = {0x5,0x9,0x7,0xA,0xB,0x3,0x2,0x4,0x1};
+uint32_t data_write[] = {0x5,0x9,0x7,0xA,0xB,0x3,0x2,0x4,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1};
 
 uint32_t data_read[30];
 
@@ -135,10 +135,10 @@ int main(void)
   HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 	HAL_Delay(500);
 
-  Address = 0x0800F020;
+  Address = 0x08007FFE;
   Flash_Write_Data(Address, data_write, sizeof(data_write));
   Flash_Read_Data(Address, data_read, 13);
-  Flash_init();
+  Flash_init(Address, 2);
   Flash_Read_Data(Address, data_read, 13);
   return 0;
 }

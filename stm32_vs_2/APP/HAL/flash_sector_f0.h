@@ -11,6 +11,6 @@ uint32_t Flash_Write_Data(uint32_t StartPageAddress, uint32_t *data, uint16_t nu
 
 void Flash_Read_Data(uint32_t StartPageAddress, uint32_t *data, uint16_t numberofwords);
 
-uint32_t Flash_init();
+uint32_t Flash_init(uint32_t StartPageAddress, uint32_t numberofpages);
 
 #endif

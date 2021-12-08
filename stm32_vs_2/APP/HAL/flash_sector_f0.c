@@ -77,18 +77,17 @@ void Flash_Read_Data(uint32_t StartPageAddress, uint32_t *data, uint16_t numbero
     }
 }
 
-uint32_t Flash_init()
+uint32_t Flash_init(uint32_t StartPageAddress, uint32_t numberofpages)
 {
     static FLASH_EraseInitTypeDef EraseInitStruct;
     uint32_t PAGEError = 0;
     /* Unlock the Flash to enable the flash control register access *************/
     HAL_FLASH_Unlock();
-    uint32_t StartPageAddress = 0x0800F000;
 
     /* Fill EraseInit structure*/
     EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
     EraseInitStruct.PageAddress = StartPageAddress;
-    EraseInitStruct.NbPages = 4;
+    EraseInitStruct.NbPages = numberofpages;
 
     if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) != HAL_OK)
     {
