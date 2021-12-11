@@ -24,18 +24,34 @@ void tearDown(void)
 
 void test_case1(void)
 {
+    TEST_ASSERT_EQUAL(GetPage(0x08000001), 0);
     TEST_ASSERT_EQUAL(GetPage(0x080003FF), 0);
+}
+
+void test_case3(void)
+{
+    TEST_ASSERT_EQUAL(GetPage(0x08000400), 1);
+    TEST_ASSERT_EQUAL(GetPage(0x080007FF), 1);
+}
+
+void test_case4(void)
+{
+    TEST_ASSERT_EQUAL(GetPage(0x08000800), 2);
+    TEST_ASSERT_EQUAL(GetPage(0x08000BFF), 2);
 }
 
 void test_case2(void)
 {
-    uint32_t data_write[] = {0x5,0x9,0x7,0xA,0xB,0x3,0x2,0x4,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x1};
+    uint32_t data_write[] = {};
     Flash_Write_Data(0x08000000, data_write, 4);
-    TEST_ASSERT_EQUAL(HAL_FLASH_Lock_fake.call_count, 0);
+    TEST_ASSERT_EQUAL(HAL_FLASH_Lock_fake.call_count, 1);
+    TEST_ASSERT_EQUAL(HAL_FLASH_Unlock_fake.call_count, 1);
 }
 
 int main(int argc, const char * argv[])
 {
     RUN_TEST(test_case1);
     RUN_TEST(test_case2);
+    RUN_TEST(test_case3);
+    RUN_TEST(test_case4);
 }
