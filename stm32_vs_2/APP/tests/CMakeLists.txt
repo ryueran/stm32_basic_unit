@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
-project(cio_unit_test C)
+project(unit_test C)
+enable_testing()
 
 add_library(fff INTERFACE)
 target_include_directories(fff INTERFACE fff)
@@ -40,7 +41,7 @@ foreach(tgt ${targets})
             ../../soc_sp/CMSIS/Device/ST/STM32F0xx/Include
             ../../soc_sp/CMSIS/Include
             )
-        add_test(NAME common.${tgt} COMMAND ${tgt})
+        add_test(NAME lob COMMAND ${tgt})
     endif()
 
 	if(CIO_ENABLE_LTO AND NOT ${target_type} STREQUAL "INTERFACE_LIBRARY")
