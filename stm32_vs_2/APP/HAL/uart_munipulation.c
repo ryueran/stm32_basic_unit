@@ -1,9 +1,8 @@
 #include "uart_munipulation.h"
 
 UART_HandleTypeDef huart2;
-DMA_HandleTypeDef hdma_usart2_rx;
 
-void UART_Write_Data(uint32_t *buf)
+void UART_Write_Data(uint8_t *buf)
 {
     HAL_UART_Transmit(&huart2, buf, 13, 10);
 }
@@ -11,7 +10,7 @@ void UART_Write_Data(uint32_t *buf)
 void UART_Init()
 {
     huart2.Instance = USART2;
-    huart2.Init.BaudRate = 38400;
+    huart2.Init.BaudRate = 9600;
     huart2.Init.WordLength = UART_WORDLENGTH_8B;
     huart2.Init.StopBits = UART_STOPBITS_1;
     huart2.Init.Parity = UART_PARITY_NONE;
