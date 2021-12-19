@@ -107,7 +107,7 @@ uint32_t data_write[] = {0x5,0x9,0x7,0xA,0xB,0x3,0x2,0x4,0x1,0x1,0x1,0x1,0x1,0x1
 
 uint32_t data_read[30];
 
-uint32_t myTxData[13] = "Hello World\r\n";
+uint8_t myTxData[13] = "Hello World\r\n";
 
 int main(void)
 {
@@ -142,7 +142,7 @@ int main(void)
 
   while(1)
   {
-    UART_Read_Data(myTxData);
+    UART_Write_Data(myTxData);
     HAL_Delay(1000);
   }
 

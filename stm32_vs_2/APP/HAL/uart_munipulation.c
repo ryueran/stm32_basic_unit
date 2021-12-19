@@ -1,6 +1,9 @@
 #include "uart_munipulation.h"
 
-void UART_Read_Data(uint32_t *buf)
+UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart2_rx;
+
+void UART_Write_Data(uint32_t *buf)
 {
     HAL_UART_Transmit(&huart2, buf, 13, 10);
 }
