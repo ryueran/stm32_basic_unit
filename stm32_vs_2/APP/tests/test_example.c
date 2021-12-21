@@ -19,6 +19,11 @@ static FLASH_EraseInitTypeDef EraseInitStruct;
 void setUp(void)
 {
   /* This is run before EACH TEST */
+  RESET_FAKE(HAL_FLASHEx_Erase);
+  RESET_FAKE(HAL_FLASH_Unlock);
+  RESET_FAKE(HAL_FLASH_GetError);
+  RESET_FAKE(HAL_FLASH_Lock);
+  RESET_FAKE(HAL_FLASH_Program);
   FFF_RESET_HISTORY();
 
 }
@@ -47,17 +52,25 @@ void test_case4(void)
 
 void test_case2(void)
 {
-    uint32_t data_write[] = {};
+    uint32_t data_write[4] = {0, 1, 2, 3};
     EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
     EraseInitStruct.PageAddress = 0x08000000;
     EraseInitStruct.NbPages = 1;
-    Flash_Write_Data(0x08000000, data_write, 4);
+    Flash_Write_Data(0x08000000, data_write, sizeof(data_write));
+    int round = 4;
     TEST_ASSERT_EQUAL(HAL_FLASH_Lock_fake.call_count, 1);
     TEST_ASSERT_EQUAL(HAL_FLASH_Unlock_fake.call_count, 1);
     TEST_ASSERT_EQUAL(HAL_FLASHEx_Erase_fake.call_count, 1);
     TEST_ASSERT_EQUAL(HAL_FLASHEx_Erase_fake.arg0_val->TypeErase, FLASH_TYPEERASE_PAGES);
     TEST_ASSERT_EQUAL(HAL_FLASHEx_Erase_fake.arg0_val->PageAddress, 0x08000000);    
     TEST_ASSERT_EQUAL(HAL_FLASHEx_Erase_fake.arg0_val->NbPages, 1);
+    TEST_ASSERT_EQUAL(HAL_FLASH_Program_fake.call_count, round);
+    for (int i = 0; i < round; i++)
+    {
+        TEST_ASSERT_EQUAL(HAL_FLASH_Program_fake.arg0_history[i], 0x02U);
+        TEST_ASSERT_EQUAL(HAL_FLASH_Program_fake.arg1_history[i], 0x08000000 + 4*i);
+        TEST_ASSERT_EQUAL(HAL_FLASH_Program_fake.arg2_history[i], data_write[i]);
+    }
 }
 
 int main(int argc, const char * argv[])
