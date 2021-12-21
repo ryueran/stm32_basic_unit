@@ -1,5 +1,5 @@
-set(CMAKE_C_COMPILER "C:/gnu/gnu/q4-major/bin/arm-none-eabi-gcc.exe")
-set(CMAKE_ASM_COMPILER "C:/gnu/gnu/q4-major/bin/arm-none-eabi-as.exe")
+#set(CMAKE_C_COMPILER "C:/gnu/gnu/q4-major/bin/arm-none-eabi-gcc.exe")
+#set(CMAKE_ASM_COMPILER "C:/gnu/gnu/q4-major/bin/arm-none-eabi-as.exe")
 SET(ASM_OPTIONS "-x assembler-with-cpp") 
 set(OBJECT_GEN "-mcpu=cortex-m0")
 set(OBJECT_GEN "-mthumb")

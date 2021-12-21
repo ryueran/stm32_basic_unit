@@ -12,13 +12,8 @@ uint32_t GetPage(uint32_t Address)
     uint32_t page_size = 1024;
     uint32_t num_of_page = 0;
     uint32_t nth_page = 0;
-    if((Address - base_address)%page_size)
-    {
-        nth_page = ((Address - base_address) / page_size) + 1;
-    } else {
-        nth_page = ((Address - base_address) / page_size);
-    }
 
+    nth_page = ((Address - base_address) / page_size);
     return num_of_page + nth_page;
 }
 
