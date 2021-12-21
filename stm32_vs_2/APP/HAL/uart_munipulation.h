@@ -9,7 +9,7 @@
 
 //extern UART_HandleTypeDef huart2;
 //extern DMA_HandleTypeDef hdma_usart2_rx;
-void UART_Write_Data(uint8_t *buf);
+void UART_Write_Data(uint8_t *buf, int size);
 void UART_Init();
 void UART_DMA_Init();
 

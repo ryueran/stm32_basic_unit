@@ -2,9 +2,9 @@
 
 UART_HandleTypeDef huart2;
 
-void UART_Write_Data(uint8_t *buf)
+void UART_Write_Data(uint8_t *buf, int size)
 {
-    HAL_UART_Transmit(&huart2, buf, 13, 10);
+    HAL_UART_Transmit(&huart2, buf, size, 20);
 }
 
 void UART_Init()
