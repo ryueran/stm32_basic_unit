@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "stm32f0xx_hal_flash.h"
 
-static uint32_t GetPage(uint32_t Address);
+uint32_t GetPage(uint32_t Address);
 
 uint32_t Flash_Write_Data(uint32_t StartPageAddress, uint32_t *data, uint16_t numberofwords);
 
