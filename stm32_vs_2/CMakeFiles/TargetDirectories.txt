@@ -1,3 +1,0 @@
-C:/stmproject/stm32_vs_2/CMakeFiles/hello.dir
-C:/stmproject/stm32_vs_2/CMakeFiles/edit_cache.dir
-C:/stmproject/stm32_vs_2/CMakeFiles/rebuild_cache.dir
