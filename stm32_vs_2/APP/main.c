@@ -42,37 +42,24 @@
 #include "nec_inc.h"
 #include "flash_sector_f0.h"
 #include "uart_munipulation.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+#include "FreeRTOS.h"
+#include "task.h"
+/*----------------------------------------------------------------------------*/
+void vApplicationTickHook( void );
 
-/* USER CODE END Includes */
+void vApplicationTickHook( void )
+{
+  
+}
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
+TaskHandle_t myTaskHandle_1 = NULL;
+TaskHandle_t myTaskHandle_2 = NULL;
 
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -111,6 +98,24 @@ DMA_HandleTypeDef hdma_usart2_rx;
 UART_HandleTypeDef huart2;
 uint8_t myTxData[13] = "Hello world\r\n";
 
+void myTask1()
+{
+  while(1)
+  {
+    UART_Write_Data(&huart2, myTxData, sizeof(myTxData)/sizeof(myTxData[0]));
+    vTaskDelay(1000);
+  }
+}
+
+void myTask2()
+{
+  while(1)
+  {
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	  vTaskDelay(500);
+  }
+}
+
 int main(void)
 {
 
@@ -127,21 +132,15 @@ int main(void)
   UART_DMA_Init();
   UART_Init(&huart2);
 
-  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-	HAL_Delay(500);
-
-  while(1)
-  {
-    UART_Write_Data(&huart2, myTxData, sizeof(myTxData)/sizeof(myTxData[0]));
-    HAL_Delay(1000);
-  }
 
   // Address = 0x08007FFE;
   // Flash_Write_Data(Address, data_write, sizeof(data_write));
   // Flash_Read_Data(Address, data_read, 13);
   // Flash_init(Address, 2);
   // Flash_Read_Data(Address, data_read, 13);
-
+  xTaskCreate(myTask1, "task1", 200, NULL, 1, &myTaskHandle_1);
+  xTaskCreate(myTask2, "task2", 200, NULL, 2, &myTaskHandle_2);
+  vTaskStartScheduler();
   return 0;
 }
 

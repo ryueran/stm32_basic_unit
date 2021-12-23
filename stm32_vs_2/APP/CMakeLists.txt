@@ -13,8 +13,9 @@ project (led LANGUAGES C ASM)
 add_executable(led_demo main.c stm32_hal_msp.c stm32f0xx_it.c)
 
 add_subdirectory(HAL)
+add_subdirectory(Third_Party/FreeRTOS)
 
-target_link_libraries(led_demo soc_sp HAL_FLASH)
+target_link_libraries(led_demo soc_sp HAL_FLASH free_rtos)
 
 target_include_directories(soc_sp 
 PUBLIC
@@ -23,6 +24,7 @@ PUBLIC
     CMSIS/Device/ST/STM32F0xx/Include
     CMSIS/Include
     ../soc_sp/BSP/h_nec
+    Third_Party/FreeRTOS/Source/include
 )
 
 target_include_directories(led_demo
