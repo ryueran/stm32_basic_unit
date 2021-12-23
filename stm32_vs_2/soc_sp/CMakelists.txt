@@ -23,6 +23,7 @@ PUBLIC
     HAL/src/stm32f0xx_hal_spi.c
     HAL/src/stm32f0xx_hal_spi_ex.c
     HAL/src/stm32f0xx_hal_dma.c
+    HAL/src/stm32f0xx_hal_uart.c
     System/system_stm32f0xx.c
 PRIVATE
     Startup/startup_stm32f030x8.s

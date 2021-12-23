@@ -41,6 +41,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "nec_inc.h"
 #include "flash_sector_f0.h"
+#include "uart_munipulation.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -106,6 +107,10 @@ uint32_t data_write[] = {0x5,0x9,0x7,0xA,0xB,0x3,0x2,0x4,0x1,0x1,0x1,0x1,0x1,0x1
 
 uint32_t data_read[30];
 
+DMA_HandleTypeDef hdma_usart2_rx;
+UART_HandleTypeDef huart2;
+uint8_t myTxData[13] = "Hello world\r\n";
+
 int main(void)
 {
 
@@ -119,15 +124,24 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
-  
+  UART_DMA_Init();
+  UART_Init(&huart2);
+
   HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 	HAL_Delay(500);
 
-  Address = 0x08007FFE;
-  Flash_Write_Data(Address, data_write, sizeof(data_write));
-  Flash_Read_Data(Address, data_read, 13);
-  Flash_init(Address, 2);
-  Flash_Read_Data(Address, data_read, 13);
+  while(1)
+  {
+    UART_Write_Data(&huart2, myTxData, sizeof(myTxData)/sizeof(myTxData[0]));
+    HAL_Delay(1000);
+  }
+
+  // Address = 0x08007FFE;
+  // Flash_Write_Data(Address, data_write, sizeof(data_write));
+  // Flash_Read_Data(Address, data_read, 13);
+  // Flash_init(Address, 2);
+  // Flash_Read_Data(Address, data_read, 13);
+
   return 0;
 }
 

@@ -17,8 +17,13 @@ set_source_files_properties(
 )
 
 add_executable(test_base64
-    test_example.c
+    test_flash.c
     ../HAL/flash_sector_f0.c
+)
+
+add_executable(test_uart
+    test_uart.c
+    ../HAL/uart_munipulation.c
 )
 
 get_property(targets DIRECTORY "${CMAKE_CURRENT_LIST_DIR}" PROPERTY BUILDSYSTEM_TARGETS)
@@ -41,7 +46,7 @@ foreach(tgt ${targets})
             ../../soc_sp/CMSIS/Device/ST/STM32F0xx/Include
             ../../soc_sp/CMSIS/Include
             )
-        add_test(NAME lob COMMAND ${tgt})
+        add_test(NAME lob.${tgt} COMMAND ${tgt})
     endif()
 
 	if(CIO_ENABLE_LTO AND NOT ${target_type} STREQUAL "INTERFACE_LIBRARY")

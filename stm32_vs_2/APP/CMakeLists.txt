@@ -10,11 +10,11 @@ set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mthumb")
 
 
 project (led LANGUAGES C ASM)
-add_executable(led_muzi main.c stm32_hal_msp.c stm32f0xx_it.c)
+add_executable(led_demo main.c stm32_hal_msp.c stm32f0xx_it.c)
 
 add_subdirectory(HAL)
 
-target_link_libraries(led_muzi soc_sp HAL_FLASH)
+target_link_libraries(led_demo soc_sp HAL_FLASH)
 
 target_include_directories(soc_sp 
 PUBLIC
@@ -25,7 +25,7 @@ PUBLIC
     ../soc_sp/BSP/h_nec
 )
 
-target_include_directories(led_muzi
+target_include_directories(led_demo
 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/HAL
 )
