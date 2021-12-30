@@ -54,6 +54,7 @@ void vApplicationTickHook( void )
 
 TaskHandle_t myTaskHandle_1 = NULL;
 TaskHandle_t myTaskHandle_2 = NULL;
+TaskHandle_t myTaskHandle_3 = NULL;
 
 SPI_HandleTypeDef hspi1;
 void SystemClock_Config(void);
@@ -98,6 +99,8 @@ DMA_HandleTypeDef hdma_usart2_rx;
 UART_HandleTypeDef huart2;
 uint8_t myTxData[13] = "Hello world\r\n";
 
+uint8_t spi_recv_data[5];
+
 void myTask1()
 {
   while(1)
@@ -116,6 +119,22 @@ void myTask2()
   }
 }
 
+void myTask3()
+{
+  HAL_SPI_Receive_IT(&hspi1, spi_recv_data, 5);
+  while(1){}
+}
+
+/* USER CODE BEGIN 4 */
+void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+  if(hspi->Instance == hspi1.Instance)
+  {
+    HAL_SPI_Receive_IT(&hspi1, spi_recv_data, 5);
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+  }
+}
+
 int main(void)
 {
 
@@ -128,9 +147,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_SPI1_Init();
   UART_DMA_Init();
   UART_Init(&huart2);
+  MX_SPI1_Init();
 
 
   // Address = 0x08007FFE;
@@ -139,7 +158,8 @@ int main(void)
   // Flash_init(Address, 2);
   // Flash_Read_Data(Address, data_read, 13);
   xTaskCreate(myTask1, "task1", 200, NULL, 1, &myTaskHandle_1);
-  xTaskCreate(myTask2, "task2", 200, NULL, 2, &myTaskHandle_2);
+  //xTaskCreate(myTask2, "task2", 200, NULL, 2, &myTaskHandle_2);
+  xTaskCreate(myTask3, "task3", 200, NULL, 3, &myTaskHandle_3);
   vTaskStartScheduler();
   return 0;
 }
@@ -194,19 +214,18 @@ static void MX_SPI1_Init(void)
   /* USER CODE END SPI1_Init 1 */
   /* SPI1 parameter configuration*/
   hspi1.Instance = SPI1;
-  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Mode = SPI_MODE_SLAVE;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.NSS = SPI_NSS_HARD_INPUT;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi1.Init.CRCPolynomial = 7;
-  hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi1.Init.CRCPolynomial = 10;
+  // hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  // hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
   if (HAL_SPI_Init(&hspi1) != HAL_OK)
   {
     Error_Handler();
