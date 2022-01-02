@@ -97,7 +97,7 @@ uint32_t data_read[30];
 
 DMA_HandleTypeDef hdma_usart2_rx;
 UART_HandleTypeDef huart2;
-uint8_t myTxData[13] = "Hello world\r\n";
+uint8_t myTxData[20] = "Data received\r\n";
 
 uint8_t spi_recv_data[5];
 
@@ -132,6 +132,7 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
   {
     HAL_SPI_Receive_IT(&hspi1, spi_recv_data, 5);
     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+    UART_Write_Data(&huart2, myTxData, sizeof(myTxData)/sizeof(myTxData[0]));
   }
 }
 
@@ -157,7 +158,7 @@ int main(void)
   // Flash_Read_Data(Address, data_read, 13);
   // Flash_init(Address, 2);
   // Flash_Read_Data(Address, data_read, 13);
-  xTaskCreate(myTask1, "task1", 200, NULL, 1, &myTaskHandle_1);
+  //xTaskCreate(myTask1, "task1", 200, NULL, 1, &myTaskHandle_1);
   //xTaskCreate(myTask2, "task2", 200, NULL, 2, &myTaskHandle_2);
   xTaskCreate(myTask3, "task3", 200, NULL, 3, &myTaskHandle_3);
   vTaskStartScheduler();
@@ -219,7 +220,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi1.Init.NSS = SPI_NSS_HARD_INPUT;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
