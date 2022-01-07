@@ -26,6 +26,11 @@ add_executable(test_uart
     ../HAL/uart_munipulation.c
 )
 
+add_executable(test_spi
+    test_spi.c
+    ../HAL/spi_manipulation.c
+)
+
 get_property(targets DIRECTORY "${CMAKE_CURRENT_LIST_DIR}" PROPERTY BUILDSYSTEM_TARGETS)
 foreach(tgt ${targets})
     get_target_property(target_type ${tgt} TYPE)
