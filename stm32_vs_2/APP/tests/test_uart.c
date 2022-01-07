@@ -76,7 +76,7 @@ void test_case2(void)
 
 void test_case3(void)
 {
-    UART_DMA_Init();
+    UART_DMA_Init(); // not testable
     TEST_ASSERT_EQUAL(HAL_NVIC_SetPriority_fake.call_count, 1);
     TEST_ASSERT_EQUAL(HAL_NVIC_EnableIRQ_fake.call_count, 1);
     TEST_ASSERT_EQUAL(HAL_NVIC_SetPriority_fake.arg0_val, DMA1_Channel4_5_IRQn);
@@ -89,6 +89,7 @@ int main(int argc, const char * argv[])
 {
     RUN_TEST(test_case1);
     RUN_TEST(test_case2);
+    //RUN_TEST(test_case3);
     return 1;
 }
 
