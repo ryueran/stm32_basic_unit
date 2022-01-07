@@ -42,6 +42,7 @@
 #include "nec_inc.h"
 #include "flash_sector_f0.h"
 #include "uart_munipulation.h"
+#include "spi_manipulation.h"
 #include "FreeRTOS.h"
 #include "task.h"
 /*----------------------------------------------------------------------------*/
@@ -121,7 +122,7 @@ void myTask2()
 
 void myTask3()
 {
-  HAL_SPI_Receive_IT(&hspi1, spi_recv_data, 5);
+  SPI_Receive_Data(&hspi1, spi_recv_data, 5);
   while(1){}
 }
 
@@ -130,7 +131,7 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {
   if(hspi->Instance == hspi1.Instance)
   {
-    HAL_SPI_Receive_IT(&hspi1, spi_recv_data, 5);
+    SPI_Receive_Data(&hspi1, spi_recv_data, 5);
     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
     UART_Write_Data(&huart2, myTxData, sizeof(myTxData)/sizeof(myTxData[0]));
   }
@@ -150,7 +151,7 @@ int main(void)
   MX_GPIO_Init();
   UART_DMA_Init();
   UART_Init(&huart2);
-  MX_SPI1_Init();
+  SPI_Init(&hspi1);
 
 
   // Address = 0x08007FFE;

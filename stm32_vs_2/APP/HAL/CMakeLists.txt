@@ -9,6 +9,7 @@ target_sources(HAL_FLASH
 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/flash_sector_f0.c
     ${CMAKE_CURRENT_SOURCE_DIR}/uart_munipulation.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/spi_manipulation.c
 )
 
 target_include_directories(HAL_FLASH 
