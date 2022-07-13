@@ -203,6 +203,8 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
   /* USER CODE END SPI2_MspInit 0 */
     /* Peripheral clock enable */
     __HAL_RCC_SPI1_CLK_ENABLE();
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
     /**SPI2 GPIO Configuration    
     PA4     ------> SPI1_SSE
     PA5     ------> SPI1_SCK
