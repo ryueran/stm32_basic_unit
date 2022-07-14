@@ -195,7 +195,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 {
 
-  GPIO_InitTypeDef GPIO_InitStruct;
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   if(hspi->Instance==SPI1)
   {
   /* USER CODE BEGIN SPI2_MspInit 0 */
