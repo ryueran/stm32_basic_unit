@@ -61,7 +61,7 @@ SPI_HandleTypeDef hspi1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
-
+static void MX_DMA_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -97,11 +97,11 @@ uint32_t data_write[] = {0x5,0x9,0x7,0xA,0xB,0x3,0x2,0x4,0x1,0x1,0x1,0x1,0x1,0x1
 uint32_t data_read[30];
 
 DMA_HandleTypeDef hdma_usart2_rx;
+DMA_HandleTypeDef hdma_spi1_rx;
 UART_HandleTypeDef huart2;
 uint8_t myTxData[20] = "Data received\r\n";
 
 uint8_t spi_recv_data[5];
-
 void myTask1()
 {
   while(1)
@@ -122,7 +122,7 @@ void myTask2()
 
 void myTask3()
 {
-  SPI_Receive_Data(&hspi1, spi_recv_data, 5);
+  HAL_SPI_Receive_DMA(&hspi1, spi_recv_data, 5);
   while(1){}
 }
 
@@ -131,7 +131,7 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {
   if(hspi->Instance == hspi1.Instance)
   {
-    SPI_Receive_Data(&hspi1, spi_recv_data, 5);
+    HAL_SPI_Receive_DMA(&hspi1, spi_recv_data, 5);
     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
     UART_Write_Data(&huart2, myTxData, sizeof(myTxData)/sizeof(myTxData[0]));
   }
@@ -150,6 +150,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   UART_DMA_Init();
+  MX_DMA_Init();
   UART_Init(&huart2);
   SPI_Init(&hspi1);
 
@@ -235,6 +236,22 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
+
+}
+
+/** 
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void) 
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel2_3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel2_3_IRQn);
 
 }
 
